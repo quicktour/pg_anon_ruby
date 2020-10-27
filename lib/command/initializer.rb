@@ -1,4 +1,4 @@
-class Command::Initilizer
+class Command::Initializer
   attr_reader :command
 
   def initialize(command)
