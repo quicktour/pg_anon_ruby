@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'ruby_pg_anon'
+RubyPgAnon.call(ARGV[0])
