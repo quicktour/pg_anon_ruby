@@ -1,6 +1,6 @@
 class RubyPgAnon
   def self.call(command)
-    Command::Initilizer.new(command).call
+    Command::Initializer.new(command).call
   end
 end
 
