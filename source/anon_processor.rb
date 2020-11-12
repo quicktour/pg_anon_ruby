@@ -27,7 +27,9 @@ module AnonProcessor
     return unless DUMP_COMMAND.key?(type)
 
     exclude_dependencies = "-N mask"
-    cmd = "#{DUMP_COMMAND[type]} --file=#{filename} #{exclude_dependencies} -d #{ENV.fetch('BACKUP_DATABASE_URL')}"
+    has_db_url = ENV.include? "BACKUP_DATABASE_URL"
+    backup_db = has_db_url ? "-d #{ENV.fetch('BACKUP_DATABASE_URL')}" : ""
+    cmd = "#{DUMP_COMMAND[type]} --file=#{filename} #{exclude_dependencies} #{backup_db}"
     system(cmd)
   end
 
