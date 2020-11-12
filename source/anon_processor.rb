@@ -26,7 +26,8 @@ module AnonProcessor
   def create_dump(type, filename)
     return unless DUMP_COMMAND.key?(type)
 
-    cmd = "#{DUMP_COMMAND[type]} --file=#{filename} -N mask -d #{ENV.fetch('BACUP_DATABASE_URL')}"
+    exclude_dependencies = "-N mask"
+    cmd = "#{DUMP_COMMAND[type]} --file=#{filename} #{exclude_dependencies} -d #{ENV.fetch('BACUP_DATABASE_URL')}"
     system(cmd)
   end
 
