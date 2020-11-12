@@ -39,6 +39,7 @@ module AnonProcessor
     filename = download_dump
     return if File.size(filename).zero?
 
+    # Trunc tables before installing new ones.
     Anon::Cleaner.new.call
     restore_from_file(filename)
     filename
@@ -52,7 +53,9 @@ module AnonProcessor
     password = ENV.fetch('POSTGRESQL_PASSWORD')
     host = ENV.fetch('POSTGRESQL_ADDRESS')
     cmd = "PGPASSWORD=#{password}; psql -d #{db} -U #{user} -h #{host} -f #{filename}"
-    2.times { system(cmd) }
+    system(cmd)
+    # Postgres extension bug, can fail to restore from first try.
+    system(cmd)
   end
 
   def remove_dumps(filearray)
@@ -62,6 +65,7 @@ module AnonProcessor
   end
 
   # process with models
+  # Create Postgres anonymizer plugin rules in the database comments.
   def load_comments(rules_type)
     file = YAML.load_file(SETTING_FILE)
     functions = Anon::Functions.new.call('create')
